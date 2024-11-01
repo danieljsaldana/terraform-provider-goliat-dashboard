@@ -1,0 +1,1 @@
+# terraform-provider-goliat-dashboard
