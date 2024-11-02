@@ -4,23 +4,23 @@
 package provider
 
 import (
-    "testing"
-    "github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestProvider(t *testing.T) {
-    if err := Provider().InternalValidate(); err != nil {
-        t.Fatalf("error: %s", err)
-    }
+	if err := Provider().InternalValidate(); err != nil {
+		t.Fatalf("error: %s", err)
+	}
 }
 
 func TestProvider_Schema(t *testing.T) {
-    provider := Provider()
-    schema := provider.Schema
+	provider := Provider()
+	schema := provider.Schema
 
-    _, ok := schema["backend_url"]
-    assert.True(t, ok, "El esquema del provider debe contener 'backend_url'")
+	_, ok := schema["backend_url"]
+	assert.True(t, ok, "El esquema del provider debe contener 'backend_url'")
 
-    _, ok = schema["token"]
-    assert.True(t, ok, "El esquema del provider debe contener 'token'")
+	_, ok = schema["token"]
+	assert.True(t, ok, "El esquema del provider debe contener 'token'")
 }

@@ -4,12 +4,12 @@
 package main
 
 import (
-    "github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
-    "goliat-dashboard-provider/internal/provider"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
+	"goliat-dashboard-provider/internal/provider"
 )
 
 func main() {
-    plugin.Serve(&plugin.ServeOpts{
-        ProviderFunc: provider.Provider,
-    })
+	plugin.Serve(&plugin.ServeOpts{
+		ProviderFunc: provider.Provider,
+	})
 }
