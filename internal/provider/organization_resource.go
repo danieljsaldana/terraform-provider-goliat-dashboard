@@ -7,10 +7,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"io"
 	"net/http"
-
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 type Organization struct {
@@ -44,12 +43,24 @@ func resourceExample() *schema.Resource {
 }
 
 func resourceExampleCreate(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config, ok := meta.(*Config)
+	if !ok {
+		return fmt.Errorf("error al convertir meta a *Config")
+	}
+
+	name, ok := d.Get("name").(string)
+	if !ok {
+		return fmt.Errorf("error al convertir el nombre a string")
+	}
+	typeVal, ok := d.Get("type").(string)
+	if !ok {
+		return fmt.Errorf("error al convertir el tipo a string")
+	}
 
 	payload := Organization{
 		ID:   "new_provider_org",
-		Name: d.Get("name").(string),
-		Type: d.Get("type").(string),
+		Name: name,
+		Type: typeVal,
 	}
 
 	body, err := json.Marshal(payload)
@@ -72,23 +83,24 @@ func resourceExampleCreate(d *schema.ResourceData, meta interface{}) error {
 	}
 	defer resp.Body.Close()
 
-	responseBody, err := io.ReadAll(resp.Body)
-	if err != nil {
-		return fmt.Errorf("error al leer la respuesta: %s", err)
-	}
+	responseBody, _ := io.ReadAll(resp.Body)
 	fmt.Printf("Response from backend: %s\n", string(responseBody))
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("fallo en la creación, código de estado: %d, respuesta: %s", resp.StatusCode, string(responseBody))
 	}
 
-	d.SetId(payload.ID) // Llamar a SetId sin asignación
+	d.SetId(payload.ID)
 	fmt.Printf("ID del recurso configurado en Terraform: %s\n", d.Id())
 	return nil
 }
 
 func resourceExampleRead(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config, ok := meta.(*Config)
+	if !ok {
+		return fmt.Errorf("error al convertir meta a *Config")
+	}
+
 	url := fmt.Sprintf("%s/api/public/organizations", config.BackendURL)
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -132,9 +144,15 @@ func resourceExampleRead(d *schema.ResourceData, meta interface{}) error {
 }
 
 func resourceExampleDelete(d *schema.ResourceData, meta interface{}) error {
-	config := meta.(*Config)
+	config, ok := meta.(*Config)
+	if !ok {
+		return fmt.Errorf("error al convertir meta a *Config")
+	}
 	resourceID := d.Id()
-	resourceName := d.Get("name").(string)
+	resourceName, ok := d.Get("name").(string)
+	if !ok {
+		return fmt.Errorf("error al convertir el nombre a string")
+	}
 
 	payload := map[string]string{
 		"id":   resourceID,

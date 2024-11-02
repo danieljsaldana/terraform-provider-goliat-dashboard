@@ -1,6 +1,3 @@
-// Copyright (c) HashiCorp, Inc.
-// SPDX-License-Identifier: MPL-2.0
-
 package provider
 
 import (
@@ -18,7 +15,7 @@ import (
 func TestAccExampleResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProviderFactories: map[string]func() (*schema.Provider, error){
-			"example": func() (*schema.Provider, error) {
+			"example": func() (*schema.Provider, error) { //nolint:unparam
 				return Provider(), nil
 			},
 		},
