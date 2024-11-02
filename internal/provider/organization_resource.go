@@ -7,9 +7,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"io"
 	"net/http"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 type Organization struct {
@@ -71,14 +72,17 @@ func resourceExampleCreate(d *schema.ResourceData, meta interface{}) error {
 	}
 	defer resp.Body.Close()
 
-	responseBody, _ := io.ReadAll(resp.Body)
+	responseBody, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("error al leer la respuesta: %s", err)
+	}
 	fmt.Printf("Response from backend: %s\n", string(responseBody))
 
 	if resp.StatusCode != http.StatusOK {
 		return fmt.Errorf("fallo en la creación, código de estado: %d, respuesta: %s", resp.StatusCode, string(responseBody))
 	}
 
-	d.SetId(payload.ID)
+	d.SetId(payload.ID) // Llamar a SetId sin asignación
 	fmt.Printf("ID del recurso configurado en Terraform: %s\n", d.Id())
 	return nil
 }
@@ -167,6 +171,8 @@ func resourceExampleDelete(d *schema.ResourceData, meta interface{}) error {
 
 func resourceExampleImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	id := d.Id()
-	d.Set("name", id)
+	if err := d.Set("name", id); err != nil {
+		return nil, err
+	}
 	return nil, nil
 }

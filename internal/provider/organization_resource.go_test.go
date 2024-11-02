@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"testing"
 	"time"
@@ -71,7 +71,7 @@ func testAccCheckExampleResourceCreated(n string) resource.TestCheckFunc {
 		}
 		defer resp.Body.Close()
 
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return fmt.Errorf("error al leer la respuesta: %s", err)
 		}
@@ -103,7 +103,7 @@ func testAccCheckExampleResourceDestroyed(n string) resource.TestCheckFunc {
 		}
 		defer resp.Body.Close()
 
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return fmt.Errorf("error al leer la respuesta: %s", err)
 		}
