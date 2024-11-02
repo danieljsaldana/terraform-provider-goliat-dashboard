@@ -36,11 +36,11 @@ func Provider() *schema.Provider {
 func configureProvider(d *schema.ResourceData) (interface{}, error) {
 	backendURL, ok := d.Get("backend_url").(string)
 	if !ok {
-		return nil, fmt.Errorf("backend_url debe ser una cadena")
+		return nil, fmt.Errorf("backend_url must be a string")
 	}
 	token, ok := d.Get("token").(string)
 	if !ok {
-		return nil, fmt.Errorf("token debe ser una cadena")
+		return nil, fmt.Errorf("token must be a string")
 	}
 	return &Config{
 		BackendURL: backendURL,

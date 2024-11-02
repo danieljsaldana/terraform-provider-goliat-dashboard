@@ -19,8 +19,8 @@ func TestProvider_Schema(t *testing.T) {
 	schema := provider.Schema
 
 	_, ok := schema["backend_url"]
-	assert.True(t, ok, "El esquema del provider debe contener 'backend_url'")
+	assert.True(t, ok, "The provider schema should contain 'backend_url'")
 
 	_, ok = schema["token"]
-	assert.True(t, ok, "El esquema del provider debe contener 'token'")
+	assert.True(t, ok, "The provider schema should contain 'token'")
 }

@@ -45,16 +45,16 @@ func resourceExample() *schema.Resource {
 func resourceExampleCreate(d *schema.ResourceData, meta interface{}) error {
 	config, ok := meta.(*Config)
 	if !ok {
-		return fmt.Errorf("error al convertir meta a *Config")
+		return fmt.Errorf("error converting meta to *Config")
 	}
 
 	name, ok := d.Get("name").(string)
 	if !ok {
-		return fmt.Errorf("error al convertir el nombre a string")
+		return fmt.Errorf("error converting name to string")
 	}
 	typeVal, ok := d.Get("type").(string)
 	if !ok {
-		return fmt.Errorf("error al convertir el tipo a string")
+		return fmt.Errorf("error converting type to string")
 	}
 
 	payload := Organization{
@@ -65,13 +65,13 @@ func resourceExampleCreate(d *schema.ResourceData, meta interface{}) error {
 
 	body, err := json.Marshal(payload)
 	if err != nil {
-		return fmt.Errorf("error al convertir los datos a JSON: %s", err)
+		return fmt.Errorf("error converting data to JSON: %s", err)
 	}
 
 	url := fmt.Sprintf("%s/api/public/organizations", config.BackendURL)
 	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(body))
 	if err != nil {
-		return fmt.Errorf("error al crear la solicitud HTTP: %s", err)
+		return fmt.Errorf("error creating HTTP request: %s", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+config.Token)
@@ -79,7 +79,7 @@ func resourceExampleCreate(d *schema.ResourceData, meta interface{}) error {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return fmt.Errorf("error al enviar la solicitud al backend: %s", err)
+		return fmt.Errorf("error sending request to backend: %s", err)
 	}
 	defer resp.Body.Close()
 
@@ -87,45 +87,45 @@ func resourceExampleCreate(d *schema.ResourceData, meta interface{}) error {
 	fmt.Printf("Response from backend: %s\n", string(responseBody))
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("fallo en la creación, código de estado: %d, respuesta: %s", resp.StatusCode, string(responseBody))
+		return fmt.Errorf("creation failed, status code: %d, response: %s", resp.StatusCode, string(responseBody))
 	}
 
 	d.SetId(payload.ID)
-	fmt.Printf("ID del recurso configurado en Terraform: %s\n", d.Id())
+	fmt.Printf("Resource ID set in Terraform: %s\n", d.Id())
 	return nil
 }
 
 func resourceExampleRead(d *schema.ResourceData, meta interface{}) error {
 	config, ok := meta.(*Config)
 	if !ok {
-		return fmt.Errorf("error al convertir meta a *Config")
+		return fmt.Errorf("error converting meta to *Config")
 	}
 
 	url := fmt.Sprintf("%s/api/public/organizations", config.BackendURL)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return fmt.Errorf("error al crear la solicitud GET: %s", err)
+		return fmt.Errorf("error creating GET request: %s", err)
 	}
 	req.Header.Set("Authorization", "Bearer "+config.Token)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return fmt.Errorf("error al enviar la solicitud GET al backend: %s", err)
+		return fmt.Errorf("error sending GET request to backend: %s", err)
 	}
 	defer resp.Body.Close()
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		return fmt.Errorf("error al leer la respuesta: %s", err)
+		return fmt.Errorf("error reading response: %s", err)
 	}
 
 	var result struct {
 		ProviderOrganizations []Organization `json:"ProviderOrganizations"`
 	}
 	if err := json.Unmarshal(body, &result); err != nil {
-		return fmt.Errorf("error al deserializar la respuesta JSON: %s", err)
+		return fmt.Errorf("error unmarshalling JSON response: %s", err)
 	}
 
 	found := false
@@ -146,12 +146,12 @@ func resourceExampleRead(d *schema.ResourceData, meta interface{}) error {
 func resourceExampleDelete(d *schema.ResourceData, meta interface{}) error {
 	config, ok := meta.(*Config)
 	if !ok {
-		return fmt.Errorf("error al convertir meta a *Config")
+		return fmt.Errorf("error converting meta to *Config")
 	}
 	resourceID := d.Id()
 	resourceName, ok := d.Get("name").(string)
 	if !ok {
-		return fmt.Errorf("error al convertir el nombre a string")
+		return fmt.Errorf("error converting name to string")
 	}
 
 	payload := map[string]string{
@@ -161,13 +161,13 @@ func resourceExampleDelete(d *schema.ResourceData, meta interface{}) error {
 
 	body, err := json.Marshal(payload)
 	if err != nil {
-		return fmt.Errorf("error al convertir los datos a JSON: %s", err)
+		return fmt.Errorf("error converting data to JSON: %s", err)
 	}
 
 	url := fmt.Sprintf("%s/api/public/organizations", config.BackendURL)
 	req, err := http.NewRequest("DELETE", url, bytes.NewBuffer(body))
 	if err != nil {
-		return fmt.Errorf("error al crear la solicitud DELETE: %s", err)
+		return fmt.Errorf("error creating DELETE request: %s", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", "Bearer "+config.Token)
@@ -175,12 +175,12 @@ func resourceExampleDelete(d *schema.ResourceData, meta interface{}) error {
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
-		return fmt.Errorf("error al enviar la solicitud de eliminación al backend: %s", err)
+		return fmt.Errorf("error sending DELETE request to backend: %s", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("fallo en la eliminación, código de estado: %d", resp.StatusCode)
+		return fmt.Errorf("deletion failed, status code: %d", resp.StatusCode)
 	}
 
 	d.SetId("")
