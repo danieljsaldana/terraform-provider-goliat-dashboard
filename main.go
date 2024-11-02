@@ -5,7 +5,7 @@ package main
 
 import (
     "github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
-    "my-terraform-provider/internal/provider"
+    "goliat-dashboard-provider/internal/provider"
 )
 
 func main() {
