@@ -27,7 +27,7 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"example_resource": resourceExample(),
+			"goliatdashboard_organization": resourceOrganization(),
 		},
 		ConfigureFunc: configureProvider,
 	}

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func TestAccExampleResource(t *testing.T) {
+func TestAccOrganizationResource(t *testing.T) {
 	token := os.Getenv("EXAMPLE_TOKEN")
 	if token == "" {
 		t.Fatal("EXAMPLE_TOKEN is not set in environment variables")
@@ -21,41 +21,41 @@ func TestAccExampleResource(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		ProviderFactories: map[string]func() (*schema.Provider, error){
-			"example": func() (*schema.Provider, error) { //nolint:unparam
+			"goliatdashboard": func() (*schema.Provider, error) { //nolint:unparam
 				return Provider(), nil
 			},
 		},
 		Steps: []resource.TestStep{
 			{
 				Config: fmt.Sprintf(`
-provider "example" {
+provider "goliatdashboard" {
   backend_url = "http://goliat-dashboard.com"
   token       = "%s"
 }
 
-resource "example_resource" "test" {
+resource "goliatdashboard_organization" "test" {
   name = "New Provider Organization"
   type = "providerOrganizations"
 }
 `, token),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("example_resource.test", "name", "New Provider Organization"),
-					testAccCheckExampleResourceCreated("example_resource.test"),
+					resource.TestCheckResourceAttr("goliatdashboard_organization.test", "name", "New Provider Organization"),
+					testAccCheckOrganizationCreated("goliatdashboard_organization.test"),
 				),
 			},
 			{
 				ImportState:  true,
 				Destroy:      true,
-				ResourceName: "example_resource.test",
+				ResourceName: "goliatdashboard_organization.test",
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckExampleResourceDestroyed("example_resource.test"),
+					testAccCheckOrganizationDestroyed("goliatdashboard_organization.test"),
 				),
 			},
 		},
 	})
 }
 
-func testAccCheckExampleResourceCreated(n string) resource.TestCheckFunc {
+func testAccCheckOrganizationCreated(n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		token := os.Getenv("EXAMPLE_TOKEN")
 		if token == "" {
@@ -101,14 +101,14 @@ func testAccCheckExampleResourceCreated(n string) resource.TestCheckFunc {
 	}
 }
 
-func testAccCheckExampleResourceDestroyed(n string) resource.TestCheckFunc {
+func testAccCheckOrganizationDestroyed(n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		token := os.Getenv("EXAMPLE_TOKEN")
 		if token == "" {
 			return fmt.Errorf("EXAMPLE_TOKEN is not set in environment variables")
 		}
 
-		url := "Goliathttp://goliat-dashboard.com/api/public/organizations"
+		url := "http://goliat-dashboard.com/api/public/organizations"
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			return fmt.Errorf("error creating GET request: %s", err)

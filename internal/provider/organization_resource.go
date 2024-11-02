@@ -18,15 +18,14 @@ type Organization struct {
 	Type string `json:"type"`
 }
 
-func resourceExample() *schema.Resource {
+func resourceOrganization() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceExampleCreate,
-		Read:   resourceExampleRead,
-		Delete: resourceExampleDelete,
+		Create: resourceOrganizationCreate,
+		Read:   resourceOrganizationRead,
+		Delete: resourceOrganizationDelete,
 		Importer: &schema.ResourceImporter{
-			State: resourceExampleImport,
+			State: resourceOrganizationImport,
 		},
-
 		Schema: map[string]*schema.Schema{
 			"name": {
 				Type:     schema.TypeString,
@@ -42,7 +41,7 @@ func resourceExample() *schema.Resource {
 	}
 }
 
-func resourceExampleCreate(d *schema.ResourceData, meta interface{}) error {
+func resourceOrganizationCreate(d *schema.ResourceData, meta interface{}) error {
 	config, ok := meta.(*Config)
 	if !ok {
 		return fmt.Errorf("error converting meta to *Config")
@@ -95,7 +94,7 @@ func resourceExampleCreate(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func resourceExampleRead(d *schema.ResourceData, meta interface{}) error {
+func resourceOrganizationRead(d *schema.ResourceData, meta interface{}) error {
 	config, ok := meta.(*Config)
 	if !ok {
 		return fmt.Errorf("error converting meta to *Config")
@@ -143,7 +142,7 @@ func resourceExampleRead(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func resourceExampleDelete(d *schema.ResourceData, meta interface{}) error {
+func resourceOrganizationDelete(d *schema.ResourceData, meta interface{}) error {
 	config, ok := meta.(*Config)
 	if !ok {
 		return fmt.Errorf("error converting meta to *Config")
@@ -187,7 +186,7 @@ func resourceExampleDelete(d *schema.ResourceData, meta interface{}) error {
 	return nil
 }
 
-func resourceExampleImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+func resourceOrganizationImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
 	id := d.Id()
 	if err := d.Set("name", id); err != nil {
 		return nil, err

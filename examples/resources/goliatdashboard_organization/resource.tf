@@ -1,4 +1,4 @@
-resource "organization_resource" "example" {
+resource "goliatdashboard_organization" "example" {
   name = "New Provider Organization"
   type = "providerOrganizations"
 }
