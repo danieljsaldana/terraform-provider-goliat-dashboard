@@ -1,64 +1,76 @@
-# Terraform Provider Scaffolding (Terraform Plugin Framework)
+# Terraform Provider for Goliat Dashboard
 
-_This template repository is built on the [Terraform Plugin Framework](https://github.com/hashicorp/terraform-plugin-framework). The template repository built on the [Terraform Plugin SDK](https://github.com/hashicorp/terraform-plugin-sdk) can be found at [terraform-provider-scaffolding](https://github.com/hashicorp/terraform-provider-scaffolding). See [Which SDK Should I Use?](https://developer.hashicorp.com/terraform/plugin/framework-benefits) in the Terraform documentation for additional information._
+The Terraform provider for [Goliat Dashboard](https://github.com/danieljsaldana/goliat-dashboard) allows for the management and automation of resources within Goliat Dashboard, facilitating Infrastructure as Code (IaC) for your project.
 
-This repository is a *template* for a [Terraform](https://www.terraform.io) provider. It is intended as a starting point for creating Terraform providers, containing:
+## Overview
 
-- A resource and a data source (`internal/provider/`),
-- Examples (`examples/`) and generated documentation (`docs/`),
-- Miscellaneous meta files.
+Goliat Dashboard is a comprehensive solution for monitoring and managing services. This provider enables users to create and manage organizations and projects in Goliat Dashboard using Terraform.
 
-These files contain boilerplate code that you will need to edit to create your own Terraform provider. Tutorials for creating Terraform providers can be found on the [HashiCorp Developer](https://developer.hashicorp.com/terraform/tutorials/providers-plugin-framework) platform. _Terraform Plugin Framework specific guides are titled accordingly._
+## Features
 
-Please see the [GitHub template repository documentation](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) for how to create a new repository from this template on GitHub.
+- Manage organizations (`goliatdashboard_organization`).
+- Manage projects (`goliatdashboard_project`).
 
-Once you've written your provider, you'll want to [publish it on the Terraform Registry](https://developer.hashicorp.com/terraform/registry/providers/publishing) so that others can use it.
+## Prerequisites
 
-## Requirements
+- [Terraform](https://www.terraform.io/downloads.html) v1.0.0 or higher.
+- An authentication token for Goliat Dashboard.
+- Access to a running instance of Goliat Dashboard.
 
-- [Terraform](https://developer.hashicorp.com/terraform/downloads) >= 1.0
-- [Go](https://golang.org/doc/install) >= 1.22
+## Installation
 
-## Building The Provider
+1. Install the provider from the Terraform Registry or clone this repository and build it:
+   ```bash
+   go install github.com/your-username/terraform-provider-goliat-dashboard@latest
+   ```
 
-1. Clone the repository
-1. Enter the repository directory
-1. Build the provider using the Go `install` command:
+2. Configure the provider in your `main.tf` file:
+   ```hcl
+   terraform {
+     required_providers {
+       goliatdashboard = {
+         source  = "your-username/goliatdashboard"
+         version = "1.0.0"
+       }
+     }
+   }
+   ```
 
-```shell
-go install
+## Configuration
+
+Include the provider configuration in your `main.tf` file:
+```hcl
+provider "goliatdashboard" {
+  backend_url = "https://your-goliat-dashboard.com"
+  token       = "your-authentication-token"
+}
 ```
 
-## Adding Dependencies
+## Usage Examples
 
-This provider uses [Go modules](https://github.com/golang/go/wiki/Modules).
-Please see the Go documentation for the most up to date information about using Go modules.
+### Create an Organization
 
-To add a new dependency `github.com/author/dependency` to your Terraform provider:
-
-```shell
-go get github.com/author/dependency
-go mod tidy
+```hcl
+resource "goliatdashboard_organization" "example" {
+  name = "New Provider Organization"
+  type = "providerOrganizations"
+}
 ```
 
-Then commit the changes to `go.mod` and `go.sum`.
+### Create a Project
 
-## Using the provider
-
-Fill this in for each provider
-
-## Developing the Provider
-
-If you wish to work on the provider, you'll first need [Go](http://www.golang.org) installed on your machine (see [Requirements](#requirements) above).
-
-To compile the provider, run `go install`. This will build the provider and put the provider binary in the `$GOPATH/bin` directory.
-
-To generate or update documentation, run `make generate`.
-
-In order to run the full suite of Acceptance tests, run `make testacc`.
-
-*Note:* Acceptance tests create real resources, and often cost money to run.
-
-```shell
-make testacc
+```hcl
+resource "goliatdashboard_project" "example" {
+  organization = "example_organization_id"
+  name         = "Example Project"
+  description  = "This is an example project"
+}
 ```
+
+## Contributing
+
+Contributions are welcome. To contribute, please open an issue or pull request on [Goliat Dashboard](https://github.com/danieljsaldana/goliat-dashboard).
+
+## License
+
+This project is licensed under the [MPL-2.0](LICENSE).
