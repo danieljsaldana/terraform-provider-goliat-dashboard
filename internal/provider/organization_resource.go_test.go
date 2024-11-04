@@ -32,7 +32,7 @@ func TestAccOrganizationResource(t *testing.T) {
 			{
 				Config: fmt.Sprintf(`
 provider "goliatdashboard" {
-  backend_url = "http://goliat-dashboard.com"
+  backend_url = "https://goliat-dashboard.com"
   token       = "%s"
 }
 
@@ -65,7 +65,7 @@ func testAccCheckOrganizationCreated(n string) resource.TestCheckFunc {
 			return fmt.Errorf("EXAMPLE_TOKEN is not set in environment variables")
 		}
 
-		url := "http://goliat-dashboard.com/api/public/organizations"
+		url := "https://goliat-dashboard.com/api/public/provider/organizations"
 		time.Sleep(2 * time.Second)
 
 		req, err := http.NewRequest("GET", url, nil)
@@ -111,7 +111,7 @@ func testAccCheckOrganizationDestroyed(n string) resource.TestCheckFunc {
 			return fmt.Errorf("EXAMPLE_TOKEN is not set in environment variables")
 		}
 
-		url := "http://goliat-dashboard.com/api/public/organizations"
+		url := "https://goliat-dashboard.com/api/public/provider/organizations"
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			return fmt.Errorf("error creating GET request: %s", err)

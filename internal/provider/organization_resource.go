@@ -67,7 +67,7 @@ func resourceOrganizationCreate(d *schema.ResourceData, meta interface{}) error 
 		return fmt.Errorf("error converting data to JSON: %s", err)
 	}
 
-	url := fmt.Sprintf("%s/api/public/organizations", config.BackendURL)
+	url := fmt.Sprintf("%s/api/public/provider/organizations", config.BackendURL)
 	req, err := http.NewRequest("PUT", url, bytes.NewBuffer(body))
 	if err != nil {
 		return fmt.Errorf("error creating HTTP request: %s", err)
@@ -100,7 +100,7 @@ func resourceOrganizationRead(d *schema.ResourceData, meta interface{}) error {
 		return fmt.Errorf("error converting meta to *Config")
 	}
 
-	url := fmt.Sprintf("%s/api/public/organizations", config.BackendURL)
+	url := fmt.Sprintf("%s/api/public/provider/organizations", config.BackendURL)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -163,7 +163,7 @@ func resourceOrganizationDelete(d *schema.ResourceData, meta interface{}) error 
 		return fmt.Errorf("error converting data to JSON: %s", err)
 	}
 
-	url := fmt.Sprintf("%s/api/public/organizations", config.BackendURL)
+	url := fmt.Sprintf("%s/api/public/provider/organizations", config.BackendURL)
 	req, err := http.NewRequest("DELETE", url, bytes.NewBuffer(body))
 	if err != nil {
 		return fmt.Errorf("error creating DELETE request: %s", err)

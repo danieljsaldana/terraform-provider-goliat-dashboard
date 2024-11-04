@@ -26,12 +26,12 @@ func TestAccProjectResource(t *testing.T) {
 			{
 				Config: `
 provider "goliatdashboard" {
-  backend_url = "http://localhost:4321"
+  backend_url = "https://goliat-dashboard.com"
   token       = "` + token + `"
 }
 
 resource "goliatdashboard_project" "test" {
-  organization = "new_provider_org_project"
+  organization = "provider_organization"
   name         = "Test Project"
   description  = "Initial description"
 }
@@ -44,12 +44,12 @@ resource "goliatdashboard_project" "test" {
 			{
 				Config: `
 provider "goliatdashboard" {
-  backend_url = "http://localhost:4321"
+  backend_url = "https://goliat-dashboard.com"
   token       = "` + token + `"
 }
 
 resource "goliatdashboard_project" "test" {
-  organization = "new_provider_org_project"
+  organization = "provider_organization"
   name         = "Test Project"
   description  = "Updated description"
 }
