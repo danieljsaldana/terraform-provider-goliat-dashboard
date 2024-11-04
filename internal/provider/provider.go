@@ -28,6 +28,7 @@ func Provider() *schema.Provider {
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"goliatdashboard_organization": resourceOrganization(),
+			"goliatdashboard_project":      resourceProject(), // Asegúrate de que resourceProject() esté definido
 		},
 		ConfigureFunc: configureProvider,
 	}
