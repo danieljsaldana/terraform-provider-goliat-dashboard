@@ -5,6 +5,7 @@ package provider
 
 import (
 	"fmt"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
@@ -28,7 +29,7 @@ func Provider() *schema.Provider {
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"goliatdashboard_organization": resourceOrganization(),
-			"goliatdashboard_project":      resourceProject(), // Asegúrate de que resourceProject() esté definido
+			"goliatdashboard_project":      resourceProject(),
 		},
 		ConfigureFunc: configureProvider,
 	}
