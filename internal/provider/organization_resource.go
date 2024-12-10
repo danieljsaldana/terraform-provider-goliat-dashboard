@@ -7,9 +7,11 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"io"
 	"net/http"
+	"regexp"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 type Organization struct {
@@ -31,6 +33,17 @@ func resourceOrganization() *schema.Resource {
 				Type:     schema.TypeString,
 				Required: true,
 				ForceNew: true,
+				ValidateFunc: func(val interface{}, key string) (warns []string, errs []error) {
+					v := val.(string)
+					matched, err := regexp.MatchString(`^[a-zA-Z0-9_-]+$`, v)
+					if err != nil {
+						errs = append(errs, fmt.Errorf("regex error: %s", err))
+					}
+					if !matched {
+						errs = append(errs, fmt.Errorf("%q must only contain letters, numbers, underscores, or hyphens", key))
+					}
+					return
+				},
 			},
 			"type": {
 				Type:     schema.TypeString,
@@ -57,7 +70,7 @@ func resourceOrganizationCreate(d *schema.ResourceData, meta interface{}) error 
 	}
 
 	payload := Organization{
-		ID:   "new_provider_org",
+		ID:   name,
 		Name: name,
 		Type: typeVal,
 	}

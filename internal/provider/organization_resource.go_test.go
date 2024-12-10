@@ -6,14 +6,15 @@ package provider
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 	"io"
 	"net/http"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 func TestAccOrganizationResource(t *testing.T) {
@@ -24,7 +25,7 @@ func TestAccOrganizationResource(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		ProviderFactories: map[string]func() (*schema.Provider, error){
-			"goliatdashboard": func() (*schema.Provider, error) { //nolint:unparam
+			"goliatdashboard": func() (*schema.Provider, error) {
 				return Provider(), nil
 			},
 		},
@@ -37,12 +38,12 @@ provider "goliatdashboard" {
 }
 
 resource "goliatdashboard_organization" "test" {
-  name = "New Provider Organization"
+  name = "new_provider_org"
   type = "providerOrganizations"
 }
 `, token),
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestCheckResourceAttr("goliatdashboard_organization.test", "name", "New Provider Organization"),
+					resource.TestCheckResourceAttr("goliatdashboard_organization.test", "name", "new_provider_org"),
 					testAccCheckOrganizationCreated("goliatdashboard_organization.test"),
 				),
 			},
@@ -94,7 +95,7 @@ func testAccCheckOrganizationCreated(n string) resource.TestCheckFunc {
 		}
 
 		for _, org := range result.ProviderOrganizations {
-			if org.ID == "new_provider_org" && org.Name == "New Provider Organization" {
+			if org.ID == "new_provider_org" && org.Name == "new_provider_org" {
 				fmt.Println("Organization found in ProviderOrganizations.")
 				return nil
 			}
