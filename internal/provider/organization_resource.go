@@ -34,7 +34,11 @@ func resourceOrganization() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 				ValidateFunc: func(val interface{}, key string) (warns []string, errs []error) {
-					v := val.(string)
+					v, ok := val.(string)
+					if !ok {
+						errs = append(errs, fmt.Errorf("expected a string for %q but got %T", key, val))
+						return warns, errs
+					}
 					matched, err := regexp.MatchString(`^[a-zA-Z0-9_-]+$`, v)
 					if err != nil {
 						errs = append(errs, fmt.Errorf("regex error: %s", err))

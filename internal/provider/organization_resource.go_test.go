@@ -25,7 +25,7 @@ func TestAccOrganizationResource(t *testing.T) {
 
 	resource.Test(t, resource.TestCase{
 		ProviderFactories: map[string]func() (*schema.Provider, error){
-			"goliatdashboard": func() (*schema.Provider, error) {
+			"goliatdashboard": func() (*schema.Provider, error) { //nolint:unparam
 				return Provider(), nil
 			},
 		},
