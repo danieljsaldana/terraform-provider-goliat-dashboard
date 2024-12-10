@@ -4,10 +4,11 @@
 package provider
 
 import (
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"os"
 	"testing"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func TestAccProjectResource(t *testing.T) {
@@ -26,7 +27,7 @@ func TestAccProjectResource(t *testing.T) {
 			{
 				Config: `
 provider "goliatdashboard" {
-  backend_url = "https://goliat-dashboard.com"
+  backend_url = "https://demo.goliat-dashboard.com"
   token       = "` + token + `"
 }
 
@@ -44,7 +45,7 @@ resource "goliatdashboard_project" "test" {
 			{
 				Config: `
 provider "goliatdashboard" {
-  backend_url = "https://goliat-dashboard.com"
+  backend_url = "https://demo.goliat-dashboard.com"
   token       = "` + token + `"
 }
 
