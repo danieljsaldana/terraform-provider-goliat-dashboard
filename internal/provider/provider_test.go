@@ -4,8 +4,9 @@
 package provider
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestProvider(t *testing.T) {

@@ -31,10 +31,16 @@ provider "goliatdashboard" {
   token       = "` + token + `"
 }
 
+resource "goliatdashboard_organization" "test_org" {
+  name = "new_provider_org"
+  type = "providerOrganizations"
+}
+
 resource "goliatdashboard_project" "test" {
-  organization = "provider_organization"
+  organization = goliatdashboard_organization.test_org.name
   name         = "Test Project"
   description  = "Initial description"
+  depends_on   = [goliatdashboard_organization.test_org]
 }
 `,
 				Check: resource.ComposeTestCheckFunc(
@@ -49,10 +55,16 @@ provider "goliatdashboard" {
   token       = "` + token + `"
 }
 
+resource "goliatdashboard_organization" "test_org" {
+  name = "new_provider_org"
+  type = "providerOrganizations"
+}
+
 resource "goliatdashboard_project" "test" {
-  organization = "provider_organization"
+  organization = goliatdashboard_organization.test_org.name
   name         = "Test Project"
   description  = "Updated description"
+  depends_on   = [goliatdashboard_organization.test_org]
 }
 `,
 				Check: resource.ComposeTestCheckFunc(
